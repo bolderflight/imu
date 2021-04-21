@@ -32,15 +32,13 @@
 
 namespace bfs {
 
-enum Odr : int8_t {
-  ODR_400HZ,
-  ODR_200HZ,
-  ODR_100HZ,
-  ODR_50HZ
-};
-
 struct ImuConfig {
-  Odr odr;
+  enum Odr : int8_t {
+    ODR_400HZ,
+    ODR_200HZ,
+    ODR_100HZ,
+    ODR_50HZ
+  } odr;
   Eigen::Vector3f accel_bias_mps2;
   Eigen::Vector3f mag_bias_ut;
   Eigen::Matrix3f accel_scale;
