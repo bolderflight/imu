@@ -55,7 +55,7 @@ class Imu {
     Eigen::Vector3f mag_ut;
   };
   Imu(TwoWire *bus, const int8_t addr) : impl_(bus, addr) {}
-  Imu(SpiClass *bus, const int8_t cs) : impl_(bus, cs) {}
+  Imu(SPIClass *bus, const int8_t cs) : impl_(bus, cs) {}
   bool Init(const Config &ref) {return impl_.Init(ref);}
   bool Read(Data * const ptr) {impl_.Read(ptr);}
 
