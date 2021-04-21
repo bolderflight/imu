@@ -34,7 +34,6 @@ namespace bfs {
 
 struct ImuConfig {
   enum Odr : int8_t {
-    ODR_400HZ,
     ODR_200HZ,
     ODR_100HZ,
     ODR_50HZ
