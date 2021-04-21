@@ -57,7 +57,7 @@ class Imu {
   Imu(TwoWire *bus, const int8_t addr) : impl_(bus, addr) {}
   Imu(SPIClass *bus, const int8_t cs) : impl_(bus, cs) {}
   bool Init(const Config &ref) {return impl_.Init(ref);}
-  bool Read(Data * const ptr) {impl_.Read(ptr);}
+  bool Read(Data * const ptr) {return impl_.Read(ptr);}
 
  private:
   Impl impl_;
