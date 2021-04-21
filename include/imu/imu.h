@@ -32,10 +32,15 @@
 
 namespace bfs {
 
+enum Odr : int8_t {
+  ODR_400HZ,
+  ODR_200HZ,
+  ODR_100HZ,
+  ODR_50HZ
+};
+
 struct ImuConfig {
-  int32_t sampling_period_ms;
-  float accel_range_mps2;
-  float gyro_range_radps;
+  Odr odr;
   Eigen::Vector3f accel_bias_mps2;
   Eigen::Vector3f mag_bias_ut;
   Eigen::Matrix3f accel_scale;
