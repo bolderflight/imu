@@ -32,32 +32,32 @@
 
 namespace bfs {
 
+struct ImuConfig {
+  int32_t sampling_period_ms;
+  float accel_range_mps2;
+  float gyro_range_radps;
+  Eigen::Vector3f accel_bias_mps2;
+  Eigen::Vector3f mag_bias_ut;
+  Eigen::Matrix3f accel_scale;
+  Eigen::Matrix3f mag_scale;
+  Eigen::Matrix3f rotation;
+};
+struct ImuData {
+  bool new_imu_data;
+  bool imu_healthy;
+  bool new_mag_data;
+  bool mag_healthy;
+  Eigen::Vector3f accel_mps2;
+  Eigen::Vector3f gyro_radps;
+  Eigen::Vector3f mag_ut;
+};
 template<class Impl>
 class Imu {
  public:
-  struct Config {
-    int32_t sampling_period_ms;
-    float accel_range_mps2;
-    float gyro_range_radps;
-    Eigen::Vector3f accel_bias_mps2;
-    Eigen::Vector3f mag_bias_ut;
-    Eigen::Matrix3f accel_scale;
-    Eigen::Matrix3f mag_scale;
-    Eigen::Matrix3f rotation;
-  };
-  struct Data {
-    bool new_imu_data;
-    bool imu_healthy;
-    bool new_mag_data;
-    bool mag_healthy;
-    Eigen::Vector3f accel_mps2;
-    Eigen::Vector3f gyro_radps;
-    Eigen::Vector3f mag_ut;
-  };
   Imu(TwoWire *bus, const int8_t addr) : impl_(bus, addr) {}
   Imu(SPIClass *bus, const int8_t cs) : impl_(bus, cs) {}
-  bool Init(const Config &ref) {return impl_.Init(ref);}
-  bool Read(Data * const ptr) {return impl_.Read(ptr);}
+  bool Init(const ImuConfig &ref) {return impl_.Init(ref);}
+  bool Read(ImuData * const ptr) {return impl_.Read(ptr);}
 
  private:
   Impl impl_;
