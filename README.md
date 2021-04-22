@@ -5,6 +5,7 @@ Defines a common interface for our Inertial Measurement Unit (IMU) sensors.
    * [Contributing guide](CONTRIBUTING.md)
 
 # Description
+This library abstracts away IMU hardware specifics by defining common configuration and data sturctures and an interface class defining common methods for IMUs. This enables the designer of higher-level software to reference this class, rather than individual sensor drivers, and have a fixed interface to design against.
 
 ## Installation
 CMake is used to build this library, which is exported as a library target called *imu*. The header is added as:
