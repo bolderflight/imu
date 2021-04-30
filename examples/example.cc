@@ -23,49 +23,25 @@
 * IN THE SOFTWARE.
 */
 
-#ifndef INCLUDE_IMU_IMU_H_
-#define INCLUDE_IMU_IMU_H_
+#include "imu/imu.h"
 
-#include <concepts>
-#include <optional>
-#include "Eigen/Core"
-#include "Eigen/Dense"
-#include "core/core.h"
-
-namespace bfs {
-
-enum FrameRate : int8_t {
-  RATE_200HZ = 0,
-  RATE_100HZ = 1,
-  RATE_50HZ = 2
-};
-struct ImuConfig {
-  std::optional<TwoWire *> i2c;
-  std::optional<SPIClass *> spi;
-  int8_t dev;
-  FrameRate frame_rate;
-  Eigen::Vector3f accel_bias_mps2;
-  Eigen::Vector3f mag_bias_ut;
-  Eigen::Matrix3f accel_scale;
-  Eigen::Matrix3f mag_scale;
-  Eigen::Matrix3f rotation;
-};
-struct ImuData {
-  bool new_imu_data;
-  bool imu_healthy;
-  bool new_mag_data;
-  bool mag_healthy;
-  Eigen::Vector3f accel_mps2;
-  Eigen::Vector3f gyro_radps;
-  Eigen::Vector3f mag_ut;
+/* Example class compiant with the Imu interface */
+class ImuExample {
+ public:
+  bool Init(const bfs::ImuConfig &ref) {}
+  bool Read(bfs::ImuData * const ptr) {}
 };
 
-template<typename T>
-concept Imu = requires(T imu, const ImuConfig &ref, ImuData * const ptr) {
-  { imu.Init(ref) } -> std::same_as<bool>;
-  { imu.Read(ptr) } -> std::same_as<bool>;
-};
+/* Checking that the ImuExample class meets the requires of bfs::Imu */
+static_assert(bfs::Imu<ImuExample>,
+  "IMU example should conform to the IMU interface");
 
-}  // namespace bfs
+/* Function that is templated against the IMU interface */
+template<bfs::Imu T>
+bool InitImu(T imu, const bfs::ImuConfig &config) {
+  return imu.Init(config);
+}
 
-#endif  // INCLUDE_IMU_IMU_H_
+int main() {
+
+}
