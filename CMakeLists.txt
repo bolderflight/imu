@@ -5,7 +5,7 @@ if (DEFINED MCU)
 endif()
 # Project information
 project(Imu
-	VERSION 2.0.1
+	VERSION 2.0.2
 	DESCRIPTION "IMU interface"
 	LANGUAGES CXX
 )

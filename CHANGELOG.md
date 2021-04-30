@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.0.2
+- Updated the frame rate enum so the value is the rate in Hz
+
 ## v2.0.1
 - Switched to using a variant instead of optional for selecting the bus interface
 
