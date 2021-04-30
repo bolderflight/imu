@@ -34,10 +34,10 @@
 
 namespace bfs {
 
-enum FrameRate : int8_t {
-  RATE_200HZ = 0,
-  RATE_100HZ = 1,
-  RATE_50HZ = 2
+enum FrameRate : uint8_t {
+  RATE_50HZ = 50,
+  RATE_100HZ = 100,
+  RATE_200HZ = 200
 };
 struct ImuConfig {
   std::variant<TwoWire *, SPIClass *> bus;
