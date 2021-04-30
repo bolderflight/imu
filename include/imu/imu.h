@@ -64,7 +64,7 @@ template<typename T>
 concept Imu = requires(T imu, const ImuConfig &ref, ImuData * const ptr) {
   { imu.Init(ref) } -> std::same_as<bool>;
   { imu.Read(ptr) } -> std::same_as<bool>;
-};
+};  // NOLINT - gets confused with concepts and semicolon after braces
 
 }  // namespace bfs
 
