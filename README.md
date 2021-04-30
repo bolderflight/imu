@@ -5,7 +5,7 @@ Defines a common interface for our Inertial Measurement Unit (IMU) sensors.
    * [Contributing guide](CONTRIBUTING.md)
 
 # Description
-This library abstracts away IMU hardware specifics by defining common configuration and data sturctures and an interface class defining common methods for IMUs. This enables the designer of higher-level software to reference this class, rather than individual sensor drivers, and have a fixed interface to design against.
+This library defines what an *Imu* interface should look like, enabling higher level code to abstract out sensor specifics and design against this interface.
 
 ## Installation
 CMake is used to build this library, which is exported as a library target called *imu*. The header is added as:
@@ -21,7 +21,7 @@ cmake .. -DMCU=MK66FX1M0
 make
 ```
 
-This will build the library. Notice that the *cmake* command includes a define specifying the microcontroller the code is being compiled for. This is required to correctly configure the code, CPU frequency, and compile/linker options. The available MCUs are:
+This will build the library and an example called *example*, which has source code located in *examples/example.cc*. Notice that the *cmake* command includes a define specifying the microcontroller the code is being compiled for. This is required to correctly configure the code, CPU frequency, and compile/linker options. The available MCUs are:
    * MK20DX128
    * MK20DX256
    * MK64FX512
@@ -37,24 +37,29 @@ This library is within the namespace *bfs*.
 
 ## Class / Methods
 
+**enum FrameRate** specifies the frame rate for the IMU, which also specifies the flight computer frame rate.
+
+| Enum | Description |
+| --- | --- |
+| RATE_200HZ | 200 Hz |
+| RATE_100HZ | 100 Hz |
+| RATE_50HZ | 50 Hz |
+
 **struct ImuConfig** defines a structure used to configure the sensor. The data fields are:
 
 | Name | Description |
 | --- | --- |
-| enum Odr | The desired output data rate of the sensor |
+| std::optional<TwoWire &ast;> i2c | A pointer to the I2C interface for use with the sensor |
+| std::optional<SPIClass &ast;> spi | A pointer to the SPI interface for use with the sensor |
+| int8_t dev | The I2C address or SPI pin |
+| FrameRate frame_rate | The frame rate the sensor should use |
 | Eigen::Vector3f accel_bias_mps2 | A vector of accelerometer biases, m/s/s |
 | Eigen::Vector3f mag_bias_ut | A vector of mag biases, uT |
 | Eigen::Matrix3f accel_scale | A vector of accelerometer scale factors |
 | Eigen::Matrix3f mag_scale | A vector of mag scale factors |
 | Eigen::Matrix3f rotation | Rotation matrix to align sensor data with vehicle frame |
 
-The output data rate enum defines three possible data rates:
-
-| Enum | Description |
-| --- | --- |
-| ODR_200HZ | 200 Hz output data rate |
-| ODR_100HZ | 100 Hz output data rate |
-| ODR_50HZ | 50 Hz output data rate |
+Note that with *std::optional* variables, these are optionally set and should be checked before use. If the *i2c* variable is set, then I2C communication should be used. If *spi* is set, then SPI communication should be used.
 
 The accel and mag biases and scale factors should be determined offline and input here, they are relatively stable with respect to temperature. Gyro biases are estimated during init and a scale factor is not applied to the gyro data.
 
@@ -80,20 +85,10 @@ The rotation matrix is used to align the sensor data with the vehicle frame. Thi
 | Eigen::Vector3f gyro_radps | The 3-axis gyro data, rad/s |
 | Eigen::Vector3f mag_ut | The 3-axis mag data, uT |
 
-Health is determined by whether the sensor fails to read 5 times in a row at the expected sampling rate.
+Health is determined by whether the sensor fails to read 5 times in a row at the expected sampling rate. The output data should be aligned in the direction of the vehicle, as given by the *rotation* configuration data member.
 
-**Imu** The *Imu* class defines a common interface to IMU sensors. It is templated with the object implementing this interface for the desired sensor. For example, the MPU-9250 implementation may be:
+**Imu** Concepts are used to define what an *Imu* compliant object looks like and provide a means to templating against an *Imu* interface. The two required methods are:
 
-```C++
-bfs::Imu<Mpu9250Imu> imu(&SPI, 10);
-```
+**bool Init(const ImuConfig &ref)** This method should receive an *ImuConfig* struct and should establish communication with the IMU sensor, configure the sensor, and zero gyro biases. True is returned on successfully initializing the sensor.
 
-Similar to how a pure virtual class can be used to define an interface using dynamic polymorphism, this approach uses static polymorphism.
-
-**Imu(TwoWire &ast;bus, const int8_t addr)** creates an Imu object that uses an I2C communication interface. A pointer to the I2C bus object is passed along with the I2C address of the sensor.
-
-**Imu(SPIClass &ast;bus, const int8_t cs)** creates an Imu object that uses a SPI communication interface. A pointer to the SPI bus object is passed along with the chip select pin of the sensor.
-
-**bool Init(const ImuConfig &ref)** initializes communication with the sensor and configures it. Returns true if communication is established and configuration was successful.
-
-**bool Read(ImuData &ast; const ptr)** reads data from the sensor. Returns true if new data was received from either the accel, gyro, or mag.
+**bool Read(ImuData &ast; const ptr)** This method should get new data from the sensor and return it using a pointer to the *ImuData* struct. True is returned if new IMU data is received.
