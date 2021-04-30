@@ -27,7 +27,7 @@
 #define INCLUDE_IMU_IMU_H_
 
 #include <concepts>
-#include <optional>
+#include <variant>
 #include "Eigen/Core"
 #include "Eigen/Dense"
 #include "core/core.h"
@@ -40,8 +40,7 @@ enum FrameRate : int8_t {
   RATE_50HZ = 2
 };
 struct ImuConfig {
-  std::optional<TwoWire *> i2c;
-  std::optional<SPIClass *> spi;
+  std::variant<TwoWire *, SPIClass *> bus;
   int8_t dev;
   FrameRate frame_rate;
   Eigen::Vector3f accel_bias_mps2;

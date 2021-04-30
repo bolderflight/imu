@@ -49,8 +49,7 @@ This library is within the namespace *bfs*.
 
 | Name | Description |
 | --- | --- |
-| std::optional<TwoWire &ast;> i2c | A pointer to the I2C interface for use with the sensor |
-| std::optional<SPIClass &ast;> spi | A pointer to the SPI interface for use with the sensor |
+| std::variant<TwoWire &ast;, SPIClass &ast;> bus | A pointer to the interface used to the communicate with the sensor |
 | int8_t dev | The I2C address or SPI pin |
 | FrameRate frame_rate | The frame rate the sensor should use |
 | Eigen::Vector3f accel_bias_mps2 | A vector of accelerometer biases, m/s/s |
@@ -58,8 +57,6 @@ This library is within the namespace *bfs*.
 | Eigen::Matrix3f accel_scale | A vector of accelerometer scale factors |
 | Eigen::Matrix3f mag_scale | A vector of mag scale factors |
 | Eigen::Matrix3f rotation | Rotation matrix to align sensor data with vehicle frame |
-
-Note that with *std::optional* variables, these are optionally set and should be checked before use. If the *i2c* variable is set, then I2C communication should be used. If *spi* is set, then SPI communication should be used.
 
 The accel and mag biases and scale factors should be determined offline and input here, they are relatively stable with respect to temperature. Gyro biases are estimated during init and a scale factor is not applied to the gyro data.
 
