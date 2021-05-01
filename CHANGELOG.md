@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.0.3
+- Updated to eigen v2.0.0
+
 ## v2.0.2
 - Updated the frame rate enum so the value is the rate in Hz
 
