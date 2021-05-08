@@ -35,14 +35,14 @@
 namespace bfs {
 
 enum FrameRate : uint8_t {
-  RATE_50HZ = 50,
-  RATE_100HZ = 100,
-  RATE_200HZ = 200
+  FRAME_RATE_50HZ = 50,
+  FRAME_RATE_100HZ = 100,
+  FRAME_RATE_200HZ = 200
 };
 struct ImuConfig {
-  std::variant<TwoWire *, SPIClass *> bus;
-  int8_t dev;
   FrameRate frame_rate;
+  int8_t dev;
+  std::variant<TwoWire *, SPIClass *> bus;
   Eigen::Vector3f accel_bias_mps2;
   Eigen::Vector3f mag_bias_ut;
   Eigen::Matrix3f accel_scale;
@@ -51,9 +51,10 @@ struct ImuConfig {
 };
 struct ImuData {
   bool new_imu_data;
-  bool imu_healthy;
   bool new_mag_data;
+  bool imu_healthy;
   bool mag_healthy;
+  float die_temp_c;
   Eigen::Vector3f accel_mps2;
   Eigen::Vector3f gyro_radps;
   Eigen::Vector3f mag_ut;

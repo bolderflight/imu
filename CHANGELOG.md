@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.1.0
+- Added *die_temp_c* data member
+- Re-ordered structs to optimize packing
+
 ## v2.0.3
 - Updated to eigen v2.0.0
 
