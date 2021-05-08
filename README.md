@@ -41,17 +41,17 @@ This library is within the namespace *bfs*.
 
 | Enum | Description |
 | --- | --- |
-| RATE_200HZ | 200 Hz |
-| RATE_100HZ | 100 Hz |
-| RATE_50HZ | 50 Hz |
+| FRAME_RATE_200HZ | 200 Hz |
+| FRAME_RATE_100HZ | 100 Hz |
+| FRAME_RATE_50HZ | 50 Hz |
 
 **struct ImuConfig** defines a structure used to configure the sensor. The data fields are:
 
 | Name | Description |
 | --- | --- |
-| std::variant<TwoWire &ast;, SPIClass &ast;> bus | A pointer to the interface used to the communicate with the sensor |
-| int8_t dev | The I2C address or SPI pin |
 | FrameRate frame_rate | The frame rate the sensor should use |
+| int8_t dev | The I2C address or SPI pin |
+| std::variant<TwoWire &ast;, SPIClass &ast;> bus | A pointer to the interface used to the communicate with the sensor |
 | Eigen::Vector3f accel_bias_mps2 | A vector of accelerometer biases, m/s/s |
 | Eigen::Vector3f mag_bias_ut | A vector of mag biases, uT |
 | Eigen::Matrix3f accel_scale | A vector of accelerometer scale factors |
@@ -75,9 +75,10 @@ The rotation matrix is used to align the sensor data with the vehicle frame. Thi
 | Name | Description |
 | --- | --- |
 | bool new_imu_data | Whether new accel and gyro data was read |
-| bool imu_healthy | Whether the accel and gyro are healthy |
 | bool new_mag_data | Whether new mag data was read |
+| bool imu_healthy | Whether the accel and gyro are healthy |
 | bool mag_healthy | Whether the mag is healthy |
+| float die_temp_c | The IMU die temperature, C |
 | Eigen::Vector3f accel_mps2 | The 3-axis accel data, m/s/s |
 | Eigen::Vector3f gyro_radps | The 3-axis gyro data, rad/s |
 | Eigen::Vector3f mag_ut | The 3-axis mag data, uT |
