@@ -5,7 +5,7 @@ if (DEFINED MCU)
 endif()
 # Project information
 project(Imu
-	VERSION 2.1.0
+	VERSION 2.2.0
 	DESCRIPTION "IMU interface"
 	LANGUAGES CXX
 )
@@ -21,20 +21,12 @@ if (DEFINED MCU)
 		GIT_TAG v2.0.5
 	)
 	FetchContent_MakeAvailable(core)
-	# Fetch eigen
-	FetchContent_Declare(
-		eigen
-		GIT_REPOSITORY 	https://github.com/bolderflight/eigen.git
-		GIT_TAG v2.0.0
-	)
-	FetchContent_MakeAvailable(eigen)
 	# Add the library target
 	add_library(imu INTERFACE)
 	# Link libraries
 	target_link_libraries(imu
 		INTERFACE
 			core
-			eigen
 	)
 	# Setup include directories 
 	target_include_directories(imu INTERFACE include/)
