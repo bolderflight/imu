@@ -28,26 +28,24 @@
 
 #include <concepts>
 #include <variant>
-#include "Eigen/Core"
-#include "Eigen/Dense"
 #include "core/core.h"
 
 namespace bfs {
 
-enum FrameRate : uint8_t {
+enum FrameRate : int16_t {
   FRAME_RATE_50HZ = 50,
   FRAME_RATE_100HZ = 100,
   FRAME_RATE_200HZ = 200
 };
 struct ImuConfig {
-  FrameRate frame_rate;
   int8_t dev;
+  int16_t frame_rate;
   std::variant<TwoWire *, SPIClass *> bus;
-  Eigen::Vector3f accel_bias_mps2;
-  Eigen::Vector3f mag_bias_ut;
-  Eigen::Matrix3f accel_scale;
-  Eigen::Matrix3f mag_scale;
-  Eigen::Matrix3f rotation;
+  float accel_bias_mps2[3];
+  float mag_bias_ut[3];
+  float accel_scale[3][3];
+  float mag_scale[3][3];
+  float rotation[3][3];
 };
 struct ImuData {
   bool new_imu_data;
@@ -55,9 +53,9 @@ struct ImuData {
   bool imu_healthy;
   bool mag_healthy;
   float die_temp_c;
-  Eigen::Vector3f accel_mps2;
-  Eigen::Vector3f gyro_radps;
-  Eigen::Vector3f mag_ut;
+  float accel_mps2[3];
+  float gyro_radps[3];
+  float mag_ut[3];
 };
 
 template<typename T>

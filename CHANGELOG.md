@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.2.0
+- Moved from Eigen and Enum to plain old data types to ease integration with Simulink autocode.
+
 ## v2.1.0
 - Added *die_temp_c* data member
 - Re-ordered structs to optimize packing

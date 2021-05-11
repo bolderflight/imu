@@ -39,24 +39,24 @@ This library is within the namespace *bfs*.
 
 **enum FrameRate** specifies the frame rate for the IMU, which also specifies the flight computer frame rate.
 
-| Enum | Description |
-| --- | --- |
-| FRAME_RATE_200HZ | 200 Hz |
-| FRAME_RATE_100HZ | 100 Hz |
-| FRAME_RATE_50HZ | 50 Hz |
+| Enum | Value (int16_t) | Description |
+| --- | --- | -- |
+| FRAME_RATE_200HZ | 200 | 200 Hz |
+| FRAME_RATE_100HZ | 100 | 100 Hz |
+| FRAME_RATE_50HZ | 50 | 50 Hz |
 
 **struct ImuConfig** defines a structure used to configure the sensor. The data fields are:
 
 | Name | Description |
 | --- | --- |
-| FrameRate frame_rate | The frame rate the sensor should use |
 | int8_t dev | The I2C address or SPI pin |
+| int16_t frame_rate | The frame rate the sensor should use |
 | std::variant<TwoWire &ast;, SPIClass &ast;> bus | A pointer to the interface used to the communicate with the sensor |
-| Eigen::Vector3f accel_bias_mps2 | A vector of accelerometer biases, m/s/s |
-| Eigen::Vector3f mag_bias_ut | A vector of mag biases, uT |
-| Eigen::Matrix3f accel_scale | A vector of accelerometer scale factors |
-| Eigen::Matrix3f mag_scale | A vector of mag scale factors |
-| Eigen::Matrix3f rotation | Rotation matrix to align sensor data with vehicle frame |
+| float accel_bias_mps2[3] | A vector of accelerometer biases, m/s/s |
+| float mag_bias_ut[3] | A vector of mag biases, uT |
+| float accel_scale[3][3] | A vector of accelerometer scale factors |
+| float mag_scale[3][3] | A vector of mag scale factors |
+| float rotation[3][3] | Rotation matrix to align sensor data with vehicle frame |
 
 The accel and mag biases and scale factors should be determined offline and input here, they are relatively stable with respect to temperature. Gyro biases are estimated during init and a scale factor is not applied to the gyro data.
 
@@ -79,9 +79,9 @@ The rotation matrix is used to align the sensor data with the vehicle frame. Thi
 | bool imu_healthy | Whether the accel and gyro are healthy |
 | bool mag_healthy | Whether the mag is healthy |
 | float die_temp_c | The IMU die temperature, C |
-| Eigen::Vector3f accel_mps2 | The 3-axis accel data, m/s/s |
-| Eigen::Vector3f gyro_radps | The 3-axis gyro data, rad/s |
-| Eigen::Vector3f mag_ut | The 3-axis mag data, uT |
+| float accel_mps2[3] | The 3-axis accel data, m/s/s |
+| float gyro_radps[3] | The 3-axis gyro data, rad/s |
+| float mag_ut[3] | The 3-axis mag data, uT |
 
 Health is determined by whether the sensor fails to read 5 times in a row at the expected sampling rate. The output data should be aligned in the direction of the vehicle, as given by the *rotation* configuration data member.
 
