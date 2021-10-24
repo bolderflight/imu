@@ -28,8 +28,8 @@
 /* Example class compiant with the Imu interface */
 class ImuExample {
  public:
-  bool Init(const bfs::ImuConfig &ref) {}
-  bool Read(bfs::ImuData * const ptr) {}
+  bool Config(const bfs::ImuConfig &ref) {}
+  bfs::ImuData imu_data() {}
 };
 
 /* Checking that the ImuExample class meets the requires of bfs::Imu */
@@ -39,7 +39,7 @@ static_assert(bfs::Imu<ImuExample>,
 /* Function that is templated against the IMU interface */
 template<bfs::Imu T>
 bool InitImu(T imu, const bfs::ImuConfig &config) {
-  return imu.Init(config);
+  return imu.Config(config);
 }
 
 int main() {
