@@ -27,41 +27,26 @@
 #define INCLUDE_IMU_IMU_H_
 
 #include <concepts>
-#include <variant>
-#include "core/core.h"
 
 namespace bfs {
 
-enum FrameRate : int16_t {
-  FRAME_RATE_50HZ = 50,
-  FRAME_RATE_100HZ = 100,
-  FRAME_RATE_200HZ = 200
-};
 struct ImuConfig {
-  int8_t dev;
-  int16_t frame_rate;
-  std::variant<TwoWire *, SPIClass *> bus;
   float accel_bias_mps2[3];
-  float mag_bias_ut[3];
   float accel_scale[3][3];
-  float mag_scale[3][3];
   float rotation[3][3];
 };
 struct ImuData {
-  bool new_imu_data;
-  bool new_mag_data;
-  bool imu_healthy;
-  bool mag_healthy;
+  bool new_data;
+  bool healthy;
   float die_temp_c;
   float accel_mps2[3];
   float gyro_radps[3];
-  float mag_ut[3];
 };
 
 template<typename T>
-concept Imu = requires(T imu, const ImuConfig &ref, ImuData * const ptr) {
-  { imu.Init(ref) } -> std::same_as<bool>;
-  { imu.Read(ptr) } -> std::same_as<bool>;
+concept Imu = requires(T imu, const ImuConfig &ref) {
+  { imu.Config(ref) } -> std::same_as<bool>;
+  { imu.imu_data() } -> std::same_as<ImuData>;
 };  // NOLINT - gets confused with concepts and semicolon after braces
 
 }  // namespace bfs
