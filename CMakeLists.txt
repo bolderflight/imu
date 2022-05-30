@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 # Project information
 project(Imu
-  VERSION 3.1.0
+  VERSION 3.1.1
   DESCRIPTION "IMU interface"
   LANGUAGES CXX
 )
@@ -9,10 +9,8 @@ project(Imu
 add_library(imu INTERFACE)
 # Setup include directories 
 target_include_directories(imu INTERFACE include/)
-# Compile options
-add_compile_options(
-  $<$<COMPILE_LANGUAGE:CXX>:-std=c++20>
-)
+# Need C++20
+target_compile_options(imu INTERFACE -std=c++20)
 
 # Example if this project is built separately
 if (PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
@@ -26,6 +24,6 @@ if (PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
   # Link libraries to the example target
   target_link_libraries(example
     PRIVATE 
-      sensor
+      imu
   )
 endif()

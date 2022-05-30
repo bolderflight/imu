@@ -1,5 +1,8 @@
 # Changelog
 
+## v3.1.1
+- Updated CMake compile options
+
 ## v3.1.0
 - Added default values for accel scale factor and rotation matrix (identity)
 
