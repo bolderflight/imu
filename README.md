@@ -1,4 +1,8 @@
-# imu
+[![Pipeline](https://gitlab.com/bolderflight/software/imu/badges/main/pipeline.svg)](https://gitlab.com/bolderflight/software/imu/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+![Bolder Flight Systems Logo](img/logo-words_75.png)
+
+# Imu
 Defines a common interface for our Inertial Measurement Unit (IMU) sensors.
    * [License](LICENSE.md)
    * [Changelog](CHANGELOG.md)

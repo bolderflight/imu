@@ -1,5 +1,8 @@
 # Changelog
 
+## v3.1.0
+- Added default values for accel scale factor and rotation matrix (identity)
+
 ## v3.0.0
 - Removed mag, since it now has its own interface, and removed device config items, since they are now in the Sensors interface
 

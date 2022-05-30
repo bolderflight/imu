@@ -2,7 +2,7 @@
 * Brian R Taylor
 * brian.taylor@bolderflight.com
 * 
-* Copyright (c) 2021 Bolder Flight Systems Inc
+* Copyright (c) 2022 Bolder Flight Systems Inc
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the “Software”), to
@@ -32,8 +32,8 @@ namespace bfs {
 
 struct ImuConfig {
   float accel_bias_mps2[3];
-  float accel_scale[3][3];
-  float rotation[3][3];
+  float accel_scale[3][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
+  float rotation[3][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
 };
 struct ImuData {
   bool new_data;
